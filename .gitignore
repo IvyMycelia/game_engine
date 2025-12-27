@@ -1,0 +1,5 @@
+bin/
+artifacts/
+build/
+.vscode/
+.DS_Store
