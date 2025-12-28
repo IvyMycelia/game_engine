@@ -1,6 +1,8 @@
 #include "draw.h"
+#include "text.h"
 
 #include <stdio.h>
+#include <string.h>
 
 /*
     Rectangles via triangles:
@@ -35,7 +37,15 @@ Rect draw_rectangle(Rect rect, Color color, float border, Color border_color) {
     return rect;
 }
 
-Rect draw_button(Rect rect, float border, Color fill, Color border_color, const char* label, Color text_color) {
-    // to be implemented
+Rect draw_button(Rect rect, float border, Color fill, Color border_color, const char* text, Color text_color) {
+    // float padding = rect.height * 0.1f;
+    draw_rectangle(rect, fill, border, border_color);
+    
+    float text_size = rect.height * 0.6f;
+    float text_width = strlen(text) * text_size;
+    float text_x = rect.x + (rect.width - text_width) / 2.0f;
+    float text_y = rect.y + (rect.height - text_size) / 2.0f;
+    draw_text(text_x, text_y, text, text_color, text_size);
+
     return rect;
 }

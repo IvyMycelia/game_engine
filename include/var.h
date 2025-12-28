@@ -4,6 +4,8 @@
 #include "GLFW/glfw3.h"
 #include <GL/gl.h>
 
+extern GLuint FONT_TEXTURE;
+
 typedef struct 
 {
     unsigned char r; // Red component
