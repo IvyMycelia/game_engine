@@ -16,12 +16,17 @@ typedef struct
 
 typedef struct 
 {
-    float x;    // Top-left corner x coordinate
-    float y;    // Top-left corner y coordinate
-    float width;    // Width of the rectangle
-    float height;   // Height of the rectangle
-    Color color;    // Color of the rectangle
-} Rect;
+    float x;    // X coordinate
+    float y;    // Y coordinate
+} Vec2;
+
+typedef struct {
+    Vec2* vertices;        // Max number of vertices
+    int count;    // How many vertices
+    Color color;
+} Polygon;
+typedef Polygon Rect;
+typedef Polygon Tri;
 
 
 #endif // VAR_H
