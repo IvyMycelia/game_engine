@@ -50,15 +50,18 @@ void draw_char(char c, float x, float y, float size) {
     float u1 = u0 + cell_w;
     float v1 = v0 + cell_h;
 
+    float ascent = size * 0.8f;
+    float descent = size * 0.2f;
+
     glBindTexture(GL_TEXTURE_2D, FONT_TEXTURE);
     glBegin(GL_TRIANGLES);
-    glTexCoord2f(u0, 1.0f - v1); glVertex2f(x, y);                 // Top-Left
-    glTexCoord2f(u1, 1.0f - v1); glVertex2f(x + size, y);          // Top-Right
-    glTexCoord2f(u1, 1.0f - v0); glVertex2f(x + size, y - size);   // Bottom-Right
+    glTexCoord2f(u0, 1.0f - v1); glVertex2f(x, y + ascent);                 // Top-Left
+    glTexCoord2f(u1, 1.0f - v1); glVertex2f(x + size, y + ascent);          // Top-Right
+    glTexCoord2f(u1, 1.0f - v0); glVertex2f(x + size, y - descent);         // Bottom-Right
     
-    glTexCoord2f(u0, 1.0f - v1); glVertex2f(x, y);                 // Top-Left
-    glTexCoord2f(u1, 1.0f - v0); glVertex2f(x + size, y - size);   // Bottom-Right
-    glTexCoord2f(u0, 1.0f - v0); glVertex2f(x, y - size);          // Bottom-Left
+    glTexCoord2f(u0, 1.0f - v1); glVertex2f(x, y + ascent);                 // Top-Left
+    glTexCoord2f(u1, 1.0f - v0); glVertex2f(x + size, y - descent);         // Bottom-Right
+    glTexCoord2f(u0, 1.0f - v0); glVertex2f(x, y - descent);                // Bottom-Left
     glEnd();
 }
 
@@ -68,7 +71,7 @@ void draw_text(float x, float y, const char* text, Color color, float size) {
     glEnable(GL_TEXTURE_2D);
     for (int i = 0; text[i]; i++) {
         draw_char(text[i], start, y, size);
-        start += size;
+        start += size * (8.0f / 12.0f);
     }
     glDisable(GL_TEXTURE_2D);
 }

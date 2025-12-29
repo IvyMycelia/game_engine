@@ -41,11 +41,13 @@ Rect draw_button(Rect rect, float border, Color fill, Color border_color, const 
     // float padding = rect.height * 0.1f;
     draw_rectangle(rect, fill, border, border_color);
     
-    float text_size = rect.height * 0.6f;
-    float text_width = strlen(text) * text_size;
-    float text_x = rect.x + (rect.width - text_width) / 2.0f;
-    float text_y = rect.y + (rect.height - text_size) / 2.0f;
-    draw_text(text_x, text_y, text, text_color, text_size);
+    float glyph_aspect = 8.0f / 12.0f;
+    float max_size_from_width = rect.width / (strlen(text) * glyph_aspect);
+    float size_from_height = rect.height * 0.6f;
+
+    float text_size = (max_size_from_width < size_from_height) ? max_size_from_width : size_from_height;
+
+    draw_text(rect.x + 0.05f, rect.y + (rect.height / 2) - (text_size / 2), text, text_color, text_size * 0.9f);
 
     return rect;
 }

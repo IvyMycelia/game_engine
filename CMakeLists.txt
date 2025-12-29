@@ -13,8 +13,6 @@ set(SOURCES
 )
 file(GLOB SOURCES "src/*c")
 
-
-
 add_executable(Engine ${SOURCES})
 
 set_target_properties(Engine PROPERTIES
