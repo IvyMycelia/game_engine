@@ -30,9 +30,9 @@ void game_update(double delta_time) {
 
 
     // Test logic
-    if (getKeyDown(GLFW_KEY_W)) printf("W was pressed\n");
+    if (getKeyDown(KEY_W)) printf("W was pressed\n");
     if (getMouseOver(&test_rect)) printf("Mouse is over the blue rect\n");
-    if (getMouseOver(&test_button)) if (getMouseButtonDown(GLFW_MOUSE_BUTTON_1)) printf("Button Clicked\n");
+    if (getMouseOver(&test_button)) if (getMouseButtonDown(MOUSE_BUTTON_LEFT)) printf("Button Clicked\n");
 
 
     // Clean up render
