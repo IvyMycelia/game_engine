@@ -3,8 +3,11 @@
 
 #include "GLFW/glfw3.h"
 #include <GL/gl.h>
+// #include <math.h>
 
 extern GLuint FONT_TEXTURE;
+
+extern const float PI;
 
 typedef struct 
 {
@@ -26,7 +29,7 @@ typedef struct {
     Color color;
 } Polygon;
 typedef Polygon Rect;
-typedef Polygon Tri;
-
+typedef Polygon Triangle;
+typedef Polygon Circle;
 
 #endif // VAR_H

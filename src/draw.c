@@ -3,10 +3,12 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
+const float PI = 3.14159265f;
 
-Polygon draw_rectangle(float x, float y, float width, float height, Color color, float border, Color border_color) {
-    Polygon rect;
+Rect draw_rectangle(float x, float y, float width, float height, Color color, float border, Color border_color) {
+    Rect rect;
     rect.count = 4;
     rect.vertices = malloc(sizeof(Vec2) * 4);
 
@@ -34,8 +36,8 @@ Polygon draw_rectangle(float x, float y, float width, float height, Color color,
     return rect;
 }
 
-Polygon draw_triangle(float x1, float y1, float x2, float y2, float x3, float y3, Color fill, float border, Color border_color) {
-    Polygon tri;
+Triangle draw_triangle(float x1, float y1, float x2, float y2, float x3, float y3, Color fill, float border, Color border_color) {
+    Triangle tri;
     tri.count = 3;
     tri.vertices = malloc(sizeof(Vec2) * 3);
 
@@ -60,6 +62,37 @@ Polygon draw_triangle(float x1, float y1, float x2, float y2, float x3, float y3
     }
 
     return tri;
+}
+
+Circle draw_circle(float cx, float cy, float radius, Color fill, int segments, float border, Color border_color) {
+    Circle circle;
+    circle.count = segments;
+    circle.vertices = malloc(sizeof(Vec2) * (segments + 1));
+
+    // Draw filled circle
+    glColor4f(fill.r, fill.g, fill.b, fill.a);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(cx, cy);
+        for (int i = 0; i < segments + 1; i++) {
+            float theta = 2.0f * PI * i / segments;
+            float x = cx + radius * cosf(theta);
+            float y = cy + radius * sinf(theta);
+            circle.vertices[i].x = x;
+            circle.vertices[i].y = y;
+            glVertex2f(x, y);
+        }
+    glEnd();
+
+    // Draw border (when applicable)
+    if (border > 0) {
+        glColor4f(border_color.r, border_color.g, border_color.b, border_color.a);
+        glLineWidth(border);
+        glBegin(GL_LINE_LOOP);
+            for (int i = 0; i < segments; i++) glVertex2f(circle.vertices[i].x, circle.vertices[i].y);
+        glEnd();
+    }
+
+    return circle;
 }
 
 Polygon draw_button(float x, float y, float width, float height, float border, Color fill, Color border_color, const char* text, Color text_color) {
