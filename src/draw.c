@@ -7,96 +7,99 @@
 
 const float PI = 3.14159265f;
 
-Rect draw_rectangle(float x, float y, float width, float height, Color color, float border, Color border_color) {
-    Rect rect;
-    rect.count = 4;
-    rect.vertices = malloc(sizeof(Vec2) * 4);
+Rect draw_rectangle(float x, float y, float width, float height, Color color) {
+    Rect r = {0};
+    r.type = SHAPE_RECT;
+    r.color = color;
 
-    // Define Vertices
-    rect.vertices[0] = (Vec2){x, y};                    // Bottom-left
-    rect.vertices[1] = (Vec2){x + width, y};            // Bottom-right
-    rect.vertices[2] = (Vec2){x + width, y + height};   // Top-right
-    rect.vertices[3] = (Vec2){x, y + height};           // Top-left
+    r.rect.min = (Vec2){ x, y };
+    r.rect.max = (Vec2){ x + width, y + height };
 
-    // Draw filled rectangle
-    glColor4f(color.r, color.g, color.b, color.a);
-    glBegin(GL_QUADS);
-        for (int i = 0; i < 4; i++) glVertex2f(rect.vertices[i].x, rect.vertices[i].y);
-    glEnd();
-
-    // Draw border (when applicable)
-    if (border > 0.0f) {
-        glColor4f(border_color.r, border_color.g, border_color.b, border_color.a);
-        glLineWidth(border);
-        glBegin(GL_LINE_LOOP);
-            for (int i = 0; i < 4; i++) glVertex2f(rect.vertices[i].x, rect.vertices[i].y);
-        glEnd();
-    }
-
-    return rect;
+    return r;
 }
+void render_rectangle(const Rect* r, float border, Color border_color) {
+    glColor4f(r->color.r, r->color.g, r->color.b, r->color.a);
 
-Triangle draw_triangle(float x1, float y1, float x2, float y2, float x3, float y3, Color fill, float border, Color border_color) {
-    Triangle tri;
-    tri.count = 3;
-    tri.vertices = malloc(sizeof(Vec2) * 3);
-
-    // Define vertices
-    tri.vertices[0] = (Vec2){x1, y1};
-    tri.vertices[1] = (Vec2){x2, y2};
-    tri.vertices[2] = (Vec2){x3, y3};
-
-    // Draw filled triangle
-    glColor4f(fill.r, fill.g, fill.b, fill.a);
-    glBegin(GL_TRIANGLES);
-        for (int i = 0; i < 3; i++) glVertex2f(tri.vertices[i].x, tri.vertices[i].y);
+    glBegin(GL_QUADS);
+        glVertex2f(r->rect.min.x, r->rect.min.y);
+        glVertex2f(r->rect.max.x, r->rect.min.y);
+        glVertex2f(r->rect.max.x, r->rect.max.y);
+        glVertex2f(r->rect.min.x, r->rect.max.y);
     glEnd();
 
-    // Draw border (when applicable)
     if (border > 0) {
         glColor4f(border_color.r, border_color.g, border_color.b, border_color.a);
         glLineWidth(border);
         glBegin(GL_LINE_LOOP);
-            for (int i = 0; i < 3; i++) glVertex2f(tri.vertices[i].x, tri.vertices[i].y);
+            glVertex2f(r->rect.min.x, r->rect.min.y);
+            glVertex2f(r->rect.max.x, r->rect.min.y);
+            glVertex2f(r->rect.max.x, r->rect.max.y);
+            glVertex2f(r->rect.min.x, r->rect.max.y);
         glEnd();
     }
 
-    return tri;
 }
 
-Circle draw_circle(float cx, float cy, float radius, Color fill, int segments, float border, Color border_color) {
-    Circle circle;
-    circle.count = segments;
-    circle.vertices = malloc(sizeof(Vec2) * (segments + 1));
+Triangle draw_triangle(Vec2 a, Vec2 b, Vec2 c, Color color) {
+    Triangle t = {0};
+    t.type = SHAPE_TRIANGLE;
+    t.color = color;
 
-    // Draw filled circle
-    glColor4f(fill.r, fill.g, fill.b, fill.a);
+    t.poly.count = 3;
+    t.poly.vertices = malloc(sizeof(Vec2) * 3);
+    t.poly.vertices[0] = a;
+    t.poly.vertices[1] = b;
+    t.poly.vertices[2] = c;
+
+    return t;
+}
+void render_polygon(const Shape* s, float border, Color border_color) {
+    glColor4f(s->color.r, s->color.g, s->color.b, s->color.a);
+    glBegin(GL_POLYGON);
+        for (int i = 0; i < s->poly.count; i++) glVertex2f(s->poly.vertices[i].x, s->poly.vertices[i].y);
+    glEnd();
+
+    if (border > 0) {
+        glColor4f(border_color.r, border_color.g, border_color.b, border_color.a);
+        glLineWidth(border);
+        glBegin(GL_LINE_LOOP);
+            for (int i = 0; i < s->poly.count; i++) glVertex2f(s->poly.vertices[i].x, s->poly.vertices[i].y);
+        glEnd();
+    }
+}
+
+Circle draw_circle(float cx, float cy, float radius, Color color) {
+    Circle c;
+    c.type = SHAPE_CIRCLE;
+    c.color = color;
+    c.circle.center = (Vec2){cx, cy};
+    c.circle.radius = radius;
+    return c;
+}
+void render_circle(const Circle* c, int segments, float border, Color border_color) {
+    glColor4f(c->color.r, c->color.g, c->color.b, c->color.a);
+
     glBegin(GL_TRIANGLE_FAN);
-        glVertex2f(cx, cy);
-        for (int i = 0; i < segments + 1; i++) {
+        glVertex2f(c->circle.center.x, c->circle.center.y);
+        for (int i = 0; i <= segments; i++) {
             float theta = 2.0f * PI * i / segments;
-            float x = cx + radius * cosf(theta);
-            float y = cy + radius * sinf(theta);
-            circle.vertices[i].x = x;
-            circle.vertices[i].y = y;
-            glVertex2f(x, y);
+            glVertex2f(
+                c->circle.center.x + cosf(theta) * c->circle.radius,
+                c->circle.center.y + sinf(theta) * c->circle.radius
+            );
         }
     glEnd();
-
-    // Draw border (when applicable)
-    if (border > 0) {
-        glColor4f(border_color.r, border_color.g, border_color.b, border_color.a);
-        glLineWidth(border);
-        glBegin(GL_LINE_LOOP);
-            for (int i = 0; i < segments; i++) glVertex2f(circle.vertices[i].x, circle.vertices[i].y);
-        glEnd();
-    }
-
-    return circle;
 }
 
-Polygon draw_button(float x, float y, float width, float height, float border, Color fill, Color border_color, const char* text, Color text_color) {
-    Polygon rect = draw_rectangle(x, y, width, height, fill, border, border_color);
+Rect draw_button(float x, float y, float width, float height, float border, Color fill, Color border_color, const char* text, Color text_color) {
+    Shape s = {0};
+    s.type = SHAPE_RECT;
+    s.color = fill;
+
+    s.rect.min = (Vec2){x, y};
+    s.rect.max = (Vec2){x + width, y + height};
+    
+    render_rectangle((Rect*)&s, border, border_color);
     
     float glyph_aspect = 8.0f / 12.0f;
     float max_size_from_width = width / (strlen(text) * glyph_aspect);
@@ -106,5 +109,24 @@ Polygon draw_button(float x, float y, float width, float height, float border, C
 
     draw_text(x + 0.05f, y + (height / 2) - (text_size / 2), text, text_color, text_size * 0.9f);
 
-    return rect;
+    return s;
+}
+
+void destroy_shape(Shape* s) {
+    if (!s) return;
+
+    if (s->type == SHAPE_POLY || s->type == SHAPE_TRIANGLE) {
+        if (s->poly.vertices != NULL) free(s->poly.vertices);
+        s->poly.vertices = NULL;
+        s->poly.count = 0;
+    }
+
+    if (s->text) {
+        free(s->text);
+        s->text = NULL;
+    }    
+
+    s->type = SHAPE_NONE;
+    s->color = (Color){0,0,0,0};
+    s->textColor = (Color){0,0,0,0};
 }

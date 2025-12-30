@@ -23,13 +23,46 @@ typedef struct
     float y;    // Y coordinate
 } Vec2;
 
+typedef enum {
+    SHAPE_NONE = 0,
+    SHAPE_RECT,
+    SHAPE_TRIANGLE,
+    SHAPE_CIRCLE,
+    SHAPE_POLY
+} ShapeType;
+
 typedef struct {
-    Vec2* vertices;        // Max number of vertices
-    int count;    // How many vertices
+    Vec2 center;
+    float radius;
+} CircleData;
+
+typedef struct {
+    Vec2 min;
+    Vec2 max;
+} RectData;
+
+typedef struct {
+    ShapeType type;   // Type of shape
+
+    union {
+        struct {
+            Vec2* vertices;   // Max number of vertices
+            int count;        // How many vertices
+        } poly;
+
+        RectData rect;
+        CircleData circle;
+    };
+
     Color color;
-} Polygon;
-typedef Polygon Rect;
-typedef Polygon Triangle;
-typedef Polygon Circle;
+
+    char* text;
+    Color textColor;
+} Shape;
+typedef Shape Rect;
+typedef Shape Circle;
+typedef Shape Triangle;
+typedef Shape Polygon;
+
 
 #endif // VAR_H

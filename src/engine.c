@@ -28,4 +28,5 @@ void engine_run() {
 void engine_shutdown() {
     render_shutdown();
     window_shutdown();
+    game_shutdown();
 }

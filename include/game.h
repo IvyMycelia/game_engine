@@ -3,7 +3,11 @@
 
 #include "draw.h"
 #include "text.h"
+#include "input.h"
+#include "collision.h"
 
+void game_start();
 void game_update(double delta_time);
+void game_shutdown();
 
 #endif // GAME_H
