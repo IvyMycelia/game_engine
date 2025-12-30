@@ -2,7 +2,9 @@
 #include <GLFW/glfw3.h>
 
 GLFWwindow* window;
-double last_time;
+static double last_time;
+
+int fb_width, fb_height;
 
 void window_init(int width, int height, const char* title) {
     if (!glfwInit()) {
@@ -13,6 +15,9 @@ void window_init(int width, int height, const char* title) {
     glfwMakeContextCurrent(window);
 
     last_time = glfwGetTime();
+
+    glfwGetFramebufferSize(window, &fb_width, &fb_height);
+    glViewport(0, 0, fb_width, fb_height);
 }
 
 double window_get_delta_time() {

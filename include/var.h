@@ -6,6 +6,9 @@
 // #include <math.h>
 
 extern GLuint FONT_TEXTURE;
+extern GLFWwindow* window;
+
+extern int fb_width, fb_height;
 
 extern const float PI;
 

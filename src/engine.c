@@ -3,6 +3,7 @@
 #include "render.h"
 #include "game.h"
 #include "text.h"
+#include "input.h"
 
 static int running = 1;
 
@@ -10,6 +11,8 @@ void engine_init(int width, int height, const char* title) {
     window_init(width, height, title);
     render_init();
     load_font_texture("assets/font.png");
+
+    game_start();
 }
 
 void engine_run() {
@@ -17,6 +20,8 @@ void engine_run() {
         double dt = window_get_delta_time();
 
         render_clear();
+
+        input_update();
 
         game_update(dt);
 

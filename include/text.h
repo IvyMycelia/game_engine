@@ -1,8 +1,8 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-#include "var.h"
 #include "stb_image.h"
+#include "var.h"
 
 #include <GL/gl.h>
 

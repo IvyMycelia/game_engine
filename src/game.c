@@ -19,14 +19,24 @@ void game_start() {
 }
 
 void game_update(double delta_time) {
-    render_circle(&test_circle, 10, 2.0f, (Color){1.0f, 0.1f, 0.1f, 1.0f});
+    // Render the primitive shapes
+    render_circle(&test_circle, 10, 2.0f, (Color){1.0f, 0.5f, 0.5f, 1.0f});
     render_polygon(&test_triangle, 1.0f, (Color){0.0f, 1.0f, 1.0f, 1.0f});
     render_rectangle(&test_rect, 2.0f, (Color){1.0f, 1.0f, 0.0f, 1.0f});
-    
-    Rect test_object = draw_button(-0.5f, -0.5f, 1.0f, 0.5f, 1.0f, (Color){1.0f, 0.0f, 0.0f, 1.0f}, (Color){0.0f, 1.0f, 0.0f, 1.0f}, "Game Engine Button Test", (Color){1.0f, 1.0f, 1.0f, 1.0f});
     draw_text(-0.5f, 0.5f, "Game Engine Running...", (Color){1.0f, 1.0f, 1.0f, 1.0f}, 0.1f);
+    
+    // Button stuff
+    Rect test_button = draw_button(-0.5f, -0.5f, 1.0f, 0.5f, 1.0f, (Color){1.0f, 0.0f, 0.0f, 1.0f}, (Color){0.0f, 1.0f, 0.0f, 1.0f}, "Game Engine Button Test", (Color){1.0f, 1.0f, 1.0f, 1.0f});
 
-    destroy_shape((Shape*)&test_object);
+
+    // Test logic
+    if (getKeyDown(GLFW_KEY_W)) printf("W was pressed\n");
+    if (getMouseOver(&test_rect)) printf("Mouse is over the blue rect\n");
+    if (getMouseOver(&test_button)) if (getMouseButtonDown(GLFW_MOUSE_BUTTON_1)) printf("Button Clicked\n");
+
+
+    // Clean up render
+    destroy_shape((Shape*)&test_button);
 }
 
 void game_shutdown() {

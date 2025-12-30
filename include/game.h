@@ -5,6 +5,7 @@
 #include "text.h"
 #include "input.h"
 #include "collision.h"
+#include "var.h"
 
 void game_start();
 void game_update(double delta_time);
