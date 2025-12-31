@@ -34,6 +34,7 @@ void game_update(double delta_time) {
     if (getMouseOver(&test_rect)) printf("Mouse is over the blue rect\n");
     if (getMouseOver(&test_button)) if (getMouseButtonDown(MOUSE_BUTTON_LEFT)) printf("Button Clicked\n");
 
+    if (isCollided(&test_rect, &test_button)) printf("Colliding!");
 
     // Clean up render
     destroy_shape((Shape*)&test_button);
