@@ -4,7 +4,7 @@ project(Engine C)
 set(CMAKE_C_STANDARD 11)
 
 # Include paths
-include_directories("C:/Libraries/GLFW/include")
+include_directories("glfw3 CONFIG REQUIRED")
 include_directories("include")
 
 # Linker paths
@@ -22,6 +22,7 @@ set_target_properties(Engine PROPERTIES
 )
 
 target_link_libraries(Engine
-    "C:/Libraries/GLFW/lib-vc2022/glfw3.lib"
-    opengl32
+    glfw
+    GL
+    m
 )
