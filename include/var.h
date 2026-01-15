@@ -10,6 +10,8 @@ extern GLFWwindow* window;
 
 extern int fb_width, fb_height;
 
+extern int running;
+
 extern const float PI;
 
 typedef struct 

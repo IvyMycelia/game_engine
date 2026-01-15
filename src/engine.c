@@ -4,8 +4,9 @@
 #include "game.h"
 #include "text.h"
 #include "input.h"
+#include "var.h"
 
-static int running = 1;
+int running = 1;
 
 void engine_init(int width, int height, const char* title) {
     window_init(width, height, title);
