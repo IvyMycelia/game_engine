@@ -14,6 +14,7 @@ void window_init(int width, int height, const char* title) {
     window = glfwCreateWindow(width, height, title, NULL, NULL);
     glfwMakeContextCurrent(window);
 
+    glfwSwapInterval(0);
     last_time = glfwGetTime();
 
     glfwGetFramebufferSize(window, &fb_width, &fb_height);

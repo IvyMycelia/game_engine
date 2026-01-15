@@ -27,7 +27,7 @@ void game_update(double delta_time) {
     draw_text(-0.5f, 0.5f, "Game Engine Running...", (Color){1.0f, 1.0f, 1.0f, 1.0f}, 0.1f);
     
     // FPS
-    double alpha = 0.01f;
+    double alpha = 0.1f;
     fps = fps * (1.0 - alpha) + (1.0 / delta_time) * alpha;
     char fps_text[64];
     snprintf(fps_text, sizeof(fps_text), "FPS: %.1lf", fps);
